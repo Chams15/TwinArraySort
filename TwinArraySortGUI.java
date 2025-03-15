@@ -185,7 +185,7 @@ public class TwinArraySortGUI extends JFrame {
             // Test with specific array {2, 3, 4, 10000}
             outputArea.append("\nTesting with array: {2, 3, 4, 10000}\n");
             int[] testArray = {2, 3, 4, 10000};
-            //test
+            //test case
             // Original TwinArray Sort - Test Array
             int[] originalTestArray = testArray.clone();
             System.gc();
