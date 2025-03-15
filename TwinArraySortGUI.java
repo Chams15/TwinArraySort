@@ -127,7 +127,7 @@ public class TwinArraySortGUI extends JFrame {
             
             // Original TwinArray Sort
             int[] originalArray = array.clone();
-            System.gc(); // Garbage collection before measurement
+            System.gc();
             long startMemory = getMemoryUsage();
             long startTime = System.nanoTime();
             twinArraySort(originalArray);
@@ -175,11 +175,69 @@ public class TwinArraySortGUI extends JFrame {
             outputArea.append("Unique Values: " + uniqueValues + "\n\n");
             outputArea.append(String.format("Original TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n + k), O(n + k))\n", 
                 executionTimeOriginal, memoryUsedOriginal / 1024.0));
-            outputArea.append(String.format("Optimized TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n log n), O(n))\n", 
+            outputArea.append(String.format("Optimized TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n + k), O(k) where k is the range instead of the max value of the array)\n", 
                 executionTimeOptimized, memoryUsedOptimized / 1024.0));
-            outputArea.append(String.format("Parallel TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n log n), O(n))\n", 
+            outputArea.append(String.format("Parallel TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n log n), O(n))\n",   
                 executionTimeParallel, memoryUsedParallel / 1024.0));
             outputArea.append(String.format("Hybrid Sort: %.2f ms, Memory: %.2f KB (O(n log n), O(n))\n", 
+                executionTimeHybrid, memoryUsedHybrid / 1024.0));
+                
+            // Test with specific array {2, 3, 4, 10000}
+            outputArea.append("\nTesting with array: {2, 3, 4, 10000}\n");
+            int[] testArray = {2, 3, 4, 10000};
+            
+            // Original TwinArray Sort - Test Array
+            int[] originalTestArray = testArray.clone();
+            System.gc();
+            startMemory = getMemoryUsage();
+            startTime = System.nanoTime();
+            twinArraySort(originalTestArray);
+            endTime = System.nanoTime();
+            endMemory = getMemoryUsage();
+            executionTimeOriginal = (endTime - startTime) / 1e6;
+            memoryUsedOriginal = endMemory - startMemory;
+            
+            // Optimized TwinArray Sort - Test Array
+            int[] optimizedTestArray = testArray.clone();
+            System.gc();
+            startMemory = getMemoryUsage();
+            startTime = System.nanoTime();
+            twinArraySortOptimized(optimizedTestArray);
+            endTime = System.nanoTime();
+            endMemory = getMemoryUsage();
+            executionTimeOptimized = (endTime - startTime) / 1e6;
+            memoryUsedOptimized = endMemory - startMemory;
+            
+            // Parallel TwinArray Sort - Test Array
+            int[] parallelTestArray = testArray.clone();
+            System.gc();
+            startMemory = getMemoryUsage();
+            startTime = System.nanoTime();
+            twinArraySortParallel(parallelTestArray);
+            endTime = System.nanoTime();
+            endMemory = getMemoryUsage();
+            executionTimeParallel = (endTime - startTime) / 1e6;
+            memoryUsedParallel = endMemory - startMemory;
+            
+            // Hybrid Sort - Test Array
+            int[] hybridTestArray = testArray.clone();
+            System.gc();
+            startMemory = getMemoryUsage();
+            startTime = System.nanoTime();
+            hybridSort(hybridTestArray);
+            endTime = System.nanoTime();
+            endMemory = getMemoryUsage();
+            executionTimeHybrid = (endTime - startTime) / 1e6;
+            memoryUsedHybrid = endMemory - startMemory;
+            
+            // Output results for test array
+            outputArea.append(String.format("Original TwinArray Sort: %.2f ms, Memory: %.2f KB\n", 
+                executionTimeOriginal, memoryUsedOriginal / 1024.0));
+            outputArea.append(String.format("Optimized TwinArray Sort: %.2f ms, Memory: %.2f KB\n", 
+                executionTimeOptimized, memoryUsedOptimized / 1024.0));
+            outputArea.append(String.format("Parallel TwinArray Sort: %.2f ms, Memory: %.2f KB\n", 
+                executionTimeParallel, memoryUsedParallel / 1024.0));
+            outputArea.append(String.format("Hybrid Sort: %.2f ms, Memory: %.2f KB\n", 
                 executionTimeHybrid, memoryUsedHybrid / 1024.0));
         } finally {
             System.gc();  // Cleanup after measurements
