@@ -177,14 +177,11 @@ public class TwinArraySortGUI extends JFrame {
                 executionTimeOriginal, memoryUsedOriginal / 1024.0));
             outputArea.append(String.format("Optimized TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n + k), O(k) where k is the range instead of the max value of the array)\n", 
                 executionTimeOptimized, memoryUsedOptimized / 1024.0));
-            outputArea.append(String.format("Parallel TwinArray Sort: %.2f ms, Memory: %.2f KB (O(n log n), O(n))\n",   
-                executionTimeParallel, memoryUsedParallel / 1024.0));
-            outputArea.append(String.format("Hybrid Sort: %.2f ms, Memory: %.2f KB (O(n log n), O(n))\n", 
-                executionTimeHybrid, memoryUsedHybrid / 1024.0));
+           
                 
             // Test with specific array {2, 3, 4, 10000}
-            outputArea.append("\nTesting with array: {2, 3, 4, 10000}\n");
-            int[] testArray = {2, 3, 4, 10000};
+            outputArea.append("\nTesting with array: {999, 800, 900, 10000}\n");
+            int[] testArray = {9999999,9999998, 90000000, 9999999, 100000000};
             //test case
             // Original TwinArray Sort - Test Array
             int[] originalTestArray = testArray.clone();
@@ -287,7 +284,7 @@ public class TwinArraySortGUI extends JFrame {
         }
     }
     
-    // Optimized TwinArray Sort (Using HashMap)
+    // Optimized TwinArray Sort modifying k
     private void twinArraySortOptimized(int[] arr) {
         if (arr == null || arr.length == 0) {
             return;
